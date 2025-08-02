@@ -25,6 +25,23 @@ namespace Audion.ViewModel
             }
         }
 
+        private bool isPlaying;
+        public bool IsPlaying
+        {
+            get => isPlaying;
+            set
+            {
+                if (isPlaying != value)
+                {
+                    isPlaying = value;
+                    OnPropertyChanged(nameof(IsPlaying));
+                    OnPropertyChanged(nameof(PlayPauseIcon));
+                }
+            }
+        }
+
+        public string PlayPauseIcon => IsPlaying ? "\uE769" : "\uE768"; /* pause : play icon */
+
         public event PropertyChangedEventHandler? PropertyChanged; //defining the event for the property change
 
         protected void OnPropertyChanged(string propertyName) //protected means that it can only be accessed within this class

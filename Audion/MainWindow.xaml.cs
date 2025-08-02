@@ -81,5 +81,29 @@ namespace Audion
             }
         }
 
+        private void FTraverse(object button, RoutedEventArgs metaInformation)
+        {
+            if (DataContext is MainViewModel vm && vm.SelectedPlaylist != null)
+            {
+                vm.SelectedPlaylist.TraverseForwards();
+            }
+        }
+
+        private void BTraverse(object button, RoutedEventArgs metaInformation)
+        {
+            if (DataContext is MainViewModel vm && vm.SelectedPlaylist != null)
+            {
+                vm.SelectedPlaylist.TraverseBackwards();
+            }
+        }
+
+        private void PlayPauseButton_Click(object button, RoutedEventArgs metaInformation)
+        {
+            if (DataContext is MainViewModel vm)
+            {
+                vm.IsPlaying = !vm.IsPlaying;
+            }
+        }
+
     }
 }

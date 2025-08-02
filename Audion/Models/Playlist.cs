@@ -67,6 +67,14 @@ namespace Audion.Models
             LoadTracks(folderPath); //refill the playlist in the UI with its' MP3s
             OnPropertyChanged(nameof(Tracks)); //notify UI that tracks changed
         }
+        public void TraverseForwards()
+        {
+            
+        }
+        public void TraverseBackwards()
+        {
+
+        }
 
     }
 }
