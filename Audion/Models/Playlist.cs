@@ -9,8 +9,10 @@ namespace Audion.Models
     {
         private string name;
         private string folderPath;
+        private int currentTrackIndex = -1;
         private ObservableCollection<Track> tracks = new();
 
+        private Track? selectedTrack;
 
         public string Name
         {
@@ -24,6 +26,36 @@ namespace Audion.Models
                 }
             }
         }
+
+        private int CurrentTrackIndex 
+        {
+            get => currentTrackIndex;
+            set
+            {
+                if (value >= 0 && value < Tracks.Count && Tracks.Count != value)
+                {
+                    currentTrackIndex = value;
+                    SelectedTrack = Tracks[currentTrackIndex];
+                    OnPropertyChanged(nameof(CurrentTrackIndex));
+                    OnPropertyChanged(nameof(CurrentTrack));
+                }
+            }
+        }
+
+        public Track? SelectedTrack
+        {
+            get => selectedTrack;
+            set
+            {
+                if (selectedTrack != value)
+                {
+                    selectedTrack = value;
+                    OnPropertyChanged(nameof(SelectedTrack));
+                }
+            }
+        }
+
+        public Track? CurrentTrack => Tracks.Count > 0 ? Tracks[CurrentTrackIndex] : null;
 
         public ObservableCollection<Track> Tracks
         {
@@ -69,11 +101,18 @@ namespace Audion.Models
         }
         public void TraverseForwards()
         {
-            
+            if (Tracks.Count == 0)
+                return;
+
+            CurrentTrackIndex = (CurrentTrackIndex + 1) % Tracks.Count;  
         }
+
         public void TraverseBackwards()
         {
+            if (Tracks.Count == 0)
+                return;
 
+            CurrentTrackIndex = (CurrentTrackIndex - 1 + Tracks.Count) % Tracks.Count;  
         }
 
     }

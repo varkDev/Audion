@@ -51,6 +51,7 @@
                 ClipToBounds="True"
                 Padding="5">
             <ListBox ItemsSource="{Binding SelectedPlaylist.Tracks}"
+             SelectedItem="{Binding SelectedPlaylist.SelectedTrack, Mode=TwoWay}"
              Foreground="White"
              BorderBrush="Transparent"
              FontSize="15"
