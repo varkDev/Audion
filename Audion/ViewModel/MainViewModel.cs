@@ -3,7 +3,7 @@ using System;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 
-namespace Audion.Models
+namespace Audion.ViewModel
 {
     internal class MainViewModel : INotifyPropertyChanged //the purpose of this model is to be the middleman between the view and the model
     {
