@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
+using System.IO;
 
 public class Playlist : INotifyPropertyChanged
 {
@@ -30,6 +31,21 @@ public class Playlist : INotifyPropertyChanged
                 tracks = value; //change the already set value to the new value
                 OnPropertyChanged(nameof(Tracks)); //notify the UI that the Tracks property has changed
             }
+        }
+    }
+
+    public Playlist(string folderPath) //on initialization
+    {
+        Name = Path.GetFileName(folderPath); //setting the name of the playlist to the folder name
+        LoadTracks(folderPath); //loading the tracks from the specified folder via call
+    }
+
+    private void LoadTracks(string folderPath) //on call
+    {
+        var mp3Files = Directory.GetFiles(folderPath, "*.mp3"); //finding all mp3 files within the given folder directory
+        foreach (var file in mp3Files)
+        {
+            Tracks.Add(new Track(file)); //adding each track to the tracks collection
         }
     }
 

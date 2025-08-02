@@ -1,5 +1,6 @@
 ﻿using System;
 using System.ComponentModel;
+using System.IO;
 
 public class Track : INotifyPropertyChanged
 {
@@ -30,6 +31,12 @@ public class Track : INotifyPropertyChanged
                 OnPropertyChanged(nameof(Title)); //notify the UI that the Title property has changed
             }
         }
+    }
+
+    public Track(string filePath) //on initialization
+    {
+        FilePath = filePath; //setting the dynamic value to the fixed property
+        Title = Path.GetFileNameWithoutExtension(filePath); //retrieving the file name without the extension
     }
 
     public event PropertyChangedEventHandler? PropertyChanged; //defining the event for the property change
