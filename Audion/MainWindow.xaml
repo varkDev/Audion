@@ -10,9 +10,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Audion.ViewModel"
         mc:Ignorable="d"
-        Title="Audion" Height="700" Width="1200"
-
-        FontFamily="Arial Rounded MT Bold">
+        Title="Audion" Height="700" Width="1200">
 
     <Window.DataContext>
         <local:MainViewModel />
@@ -42,7 +40,8 @@
              BorderBrush="Transparent"
              DisplayMemberPath="Name"
              Margin="0, 0, 10, 0"
-             Background="Transparent"/>
+             Background="Transparent"
+             FontFamily="Arial Rounded MT Bold"/>
         </Border>
 
         <Border Grid.Column="2"
@@ -54,7 +53,8 @@
              Foreground="White"
              BorderBrush="Transparent"
              DisplayMemberPath="Title"
-             Background="Transparent"/>
+             Background="Transparent"
+             FontFamily="Segoe UI"/>
         </Border>
 
         <StackPanel Grid.Column="0" 
@@ -73,6 +73,14 @@
                 <Button FontFamily="Segoe MDL2 Assets" 
                         Content="&#xE74D;" 
                         Click="DeletePlaylistButton_Click"
+                        Padding="10, 5" 
+                        Margin="0, 0, 5, 0"
+                        Background="#0C0F15"
+                        Foreground="White"
+                        BorderBrush="Transparent"/>
+                <Button FontFamily="Segoe MDL2 Assets" 
+                        Content="&#xE72C;" 
+                        Click="RefreshButton_Click"
                         Padding="10, 5" 
                         Margin="0, 0, 5, 0"
                         Background="#0C0F15"

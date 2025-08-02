@@ -8,7 +8,9 @@ namespace Audion.Models
     public class Playlist : INotifyPropertyChanged
     {
         private string name;
+        private string folderPath;
         private ObservableCollection<Track> tracks = new();
+
 
         public string Name
         {
@@ -39,6 +41,7 @@ namespace Audion.Models
         public Playlist(string folderPath) //on initialization
         {
             Name = Path.GetFileName(folderPath); //setting the name of the playlist to the folder name
+            this.folderPath = folderPath;
             LoadTracks(folderPath); //loading the tracks from the specified folder via call
         }
 
@@ -56,6 +59,13 @@ namespace Audion.Models
         protected void OnPropertyChanged(string propertyName) //protected means that it can only be accessed within this class
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName)); //if PropertyChanged is not null, invoke it with the current instance and the property name that has changed
+        }
+
+        public void Refresh()
+        {
+            Tracks.Clear(); //clear the track
+            LoadTracks(folderPath); //refill the playlist in the UI with its' MP3s
+            OnPropertyChanged(nameof(Tracks)); //notify UI that tracks changed
         }
 
     }

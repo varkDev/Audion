@@ -61,5 +61,25 @@ namespace Audion
             }
         }
 
+        private void RefreshButton_Click(object button, RoutedEventArgs metaInformation)
+        {
+            if (DataContext is MainViewModel vm)
+            {
+                if (vm.Playlists.Count == 0)
+                {
+                    System.Windows.MessageBox.Show("You have no playlists added.", "Unsuccessful", MessageBoxButton.OK, MessageBoxImage.Warning);
+                }
+                else
+                {
+                    foreach (var playlist in vm.Playlists)
+                    {
+                        playlist.Refresh();
+                    }
+
+                    System.Windows.MessageBox.Show("Playlists have been refreshed!", "Successful", MessageBoxButton.OK, MessageBoxImage.Information);
+                }
+            }
+        }
+
     }
 }
