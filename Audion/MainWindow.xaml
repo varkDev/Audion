@@ -17,6 +17,119 @@
         <local:MainViewModel />
     </Window.DataContext>
 
+    <Window.Resources>
+
+        <Style TargetType="ListBox" x:Key="HoverListBox">
+            <Setter Property="Background" Value="Transparent"/>
+            <Setter Property="Foreground" Value="White"/>
+            <Setter Property="BorderBrush" Value="Transparent"/>
+            <Setter Property="Padding" Value="5"/>
+            <Setter Property="FontFamily" Value="Segoe UI"/>
+            <Setter Property="FontSize" Value="15"/>
+        </Style>
+
+        <Style TargetType="ListBoxItem" x:Key="HoverListBoxItem">
+            <Setter Property="Background" Value="Transparent"/>
+            <Setter Property="Foreground" Value="White"/>
+            <Setter Property="FontFamily" Value="Segoe UI"/>
+            <Setter Property="FontSize" Value="15"/>
+            <Setter Property="Padding" Value="5,2"/>
+            <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
+            <Setter Property="VerticalContentAlignment" Value="Center"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="ListBoxItem">
+                        <Border x:Name="Bd"
+                                Background="{TemplateBinding Background}"
+                                SnapsToDevicePixels="true"
+                                Padding="{TemplateBinding Padding}">
+                            <ContentPresenter HorizontalAlignment="Left"
+                                              VerticalAlignment="Center"
+                                              Content="{TemplateBinding Content}"
+                                              ContentTemplate="{TemplateBinding ContentTemplate}"
+                                              ContentStringFormat="{TemplateBinding ContentStringFormat}" />
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsSelected" Value="True">
+                                <Setter TargetName="Bd" Property="Background" Value="#7EBB9D"/>
+                                <Setter Property="Foreground" Value="Black"/>
+                            </Trigger>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter TargetName="Bd" Property="Background" Value="#1A222A"/>
+                                <Setter Property="Foreground" Value="#A3F7BF"/>
+                            </Trigger>
+                            <Trigger Property="IsEnabled" Value="False">
+                                <Setter Property="Foreground" Value="Gray"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <Style TargetType="Button" x:Key="RegularButton">
+            <Setter Property="Background" Value="#11191E"/>
+            <Setter Property="Foreground" Value="White"/>
+            <Setter Property="BorderBrush" Value="Transparent"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border Background="{TemplateBinding Background}"
+                                BorderBrush="{TemplateBinding BorderBrush}"
+                                BorderThickness="{TemplateBinding BorderThickness}"
+                                Padding="{TemplateBinding Padding}">
+                            <TextBlock Text="{TemplateBinding Content}"
+                                       FontFamily="{TemplateBinding FontFamily}"
+                                       FontSize="{TemplateBinding FontSize}"
+                                       HorizontalAlignment="Center"
+                                       VerticalAlignment="Center"
+                                       Foreground="{TemplateBinding Foreground}" />
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+            <Style.Triggers>
+                <Trigger Property="IsMouseOver" Value="True">
+                    <Setter Property="Background" Value="#141D26"/>
+                    <Setter Property="Foreground" Value="#A3F7BF"/>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+
+        <Style TargetType="Button" x:Key="ToggleLoop">
+            <Setter Property="Background" Value="#11191E"/>
+            <Setter Property="Foreground" Value="White"/>
+            <Setter Property="BorderBrush" Value="Transparent"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border Background="{TemplateBinding Background}"
+                                BorderBrush="{TemplateBinding BorderBrush}"
+                                BorderThickness="{TemplateBinding BorderThickness}"
+                                Padding="{TemplateBinding Padding}">    
+                            <TextBlock Text="{TemplateBinding Content}"
+                                       FontFamily="{TemplateBinding FontFamily}"
+                                       FontSize="{TemplateBinding FontSize}"
+                                       HorizontalAlignment="Center"
+                                       VerticalAlignment="Center"
+                                       Foreground="{TemplateBinding Foreground}" />
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+            <Style.Triggers>
+                <DataTrigger Binding="{Binding IsLooping}" Value="True">
+                    <Setter Property="Foreground" Value="#7EBB9D"/>
+                </DataTrigger>
+                <Trigger Property="IsMouseOver" Value="True">
+                    <Setter Property="Background" Value="#141D26"/>
+                    <Setter Property="Foreground" Value="#A3F7BF"/>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+    </Window.Resources>
+
+
     <Grid Margin="10">
         
         <Grid.ColumnDefinitions>
@@ -36,14 +149,21 @@
                 ClipToBounds="True"
                 Padding="5">
             <ListBox ItemsSource="{Binding Playlists}"
-             SelectedItem="{Binding SelectedPlaylist, Mode=TwoWay}"
-             Foreground="White"
-             BorderBrush="Transparent"
-             FontSize="20"
-             DisplayMemberPath="Name"
-             Margin="0, 0, 10, 0"
-             Background="Transparent"
-             FontFamily="Arial Rounded MT Bold"/>
+                     SelectedItem="{Binding SelectedPlaylist, Mode=TwoWay}"
+                     ItemContainerStyle="{StaticResource HoverListBoxItem}"
+                     FontSize="20"
+                     FontFamily="Arial Rounded MT Bold"
+                     Background="Transparent"
+                     BorderBrush="Transparent">
+                <ListBox.ItemTemplate>
+                    <DataTemplate>
+                        <TextBlock Text="{Binding Name}" 
+                                   FontFamily="Arial Rounded MT Bold"
+                                   FontSize="20"/>
+                    </DataTemplate>
+                </ListBox.ItemTemplate>
+            </ListBox>
+
         </Border>
 
         <Border Grid.Column="2"
@@ -52,13 +172,20 @@
                 ClipToBounds="True"
                 Padding="5">
             <ListBox ItemsSource="{Binding SelectedPlaylist.Tracks}"
-             SelectedItem="{Binding SelectedPlaylist.SelectedTrack, Mode=TwoWay}"
-             Foreground="White"
-             BorderBrush="Transparent"
-             FontSize="15"
-             DisplayMemberPath="Title"
-             Background="Transparent"
-             FontFamily="Segoe UI"/>
+                     SelectedItem="{Binding SelectedPlaylist.SelectedTrack, Mode=TwoWay}"
+                     ItemContainerStyle="{StaticResource HoverListBoxItem}"
+                     FontSize="15"
+                     FontFamily="Segoe UI"
+                     Background="Transparent"
+                     BorderBrush="Transparent">
+                <ListBox.ItemTemplate>
+                    <DataTemplate>
+                        <TextBlock Text="{Binding Title}" 
+                                   FontFamily="Segoe UI"
+                                   FontSize="15"/>
+                    </DataTemplate>
+                </ListBox.ItemTemplate>
+            </ListBox>
         </Border>
 
         <StackPanel Grid.Column="0" 
@@ -68,31 +195,25 @@
                     Margin="0, 10, 10, 0">
             
             <Button FontFamily="Segoe MDL2 Assets" 
+                        Style="{StaticResource RegularButton}"
                         Content="&#xE109;" 
                         Click="AddPlaylistButton_Click"
                         Padding="10, 5" 
-                        Margin="0, 0, 5, 0"
-                        Background="#11191E"
-                        Foreground="White"
-                        BorderBrush="Transparent"/>
+                        Margin="0, 0, 5, 0"/>
             
             <Button FontFamily="Segoe MDL2 Assets" 
+                        Style="{StaticResource RegularButton}"    
                         Content="&#xE74D;" 
                         Click="DeletePlaylistButton_Click"
                         Padding="10, 5" 
-                        Margin="0, 0, 5, 0"
-                        Background="#11191E"
-                        Foreground="White"
-                        BorderBrush="Transparent"/>
+                        Margin="0, 0, 5, 0"/>
             
             <Button FontFamily="Segoe MDL2 Assets" 
+                        Style="{StaticResource RegularButton}"    
                         Content="&#xE72C;" 
                         Click="RefreshButton_Click"
                         Padding="10, 5" 
-                        Margin="0, 0, 5, 0"
-                        Background="#11191E"
-                        Foreground="White"
-                        BorderBrush="Transparent"/>
+                        Margin="0, 0, 5, 0"/>
         </StackPanel>
 
         <StackPanel Grid.Column="2" 
@@ -116,49 +237,58 @@
                     Value="{Binding Position, Mode=TwoWay}" 
                     PreviewMouseLeftButtonDown="AudioBar_MouseLeftButtonDown"
                     PreviewMouseLeftButtonUp="AudioBar_MouseLeftButtonUp"
-                    Width="550"
+                    Width="450"
                     Height="20"
                     Margin="10"/>
 
 
             <Button FontFamily="Segoe MDL2 Assets" 
+                        Style="{StaticResource RegularButton}"
                         Content="&#xE892;" 
                         Click="BTraverse"
                         Padding="10, 5" 
-                        Margin="0, 0, 5, 0"
-                        Background="#11191E"
-                        Foreground="White"
-                        BorderBrush="Transparent"/>
+                        Margin="0, 0, 5, 0"/>
             
             <Button FontFamily="Segoe MDL2 Assets" 
+                        Style="{StaticResource RegularButton}"
                         Content="{Binding PlayPauseIcon}" 
                         Click="PlayPauseButton_Click"
                         Padding="10, 5" 
-                        Margin="0, 0, 5, 0"
-                        Background="#11191E"
-                        Foreground="White"
-                        BorderBrush="Transparent"/>
+                        Margin="0, 0, 5, 0"/>
             
-            <Button FontFamily="Segoe MDL2 Assets" 
+            <Button FontFamily="Segoe MDL2 Assets"
+                        Style="{StaticResource RegularButton}"
                         Content="&#xE893;" 
                         Click="FTraverse"
                         Padding="10, 5" 
-                        Margin="0, 0, 5, 0"
-                        Background="#11191E"
-                        Foreground="White"
-                        BorderBrush="Transparent"/>
-            
+                        Margin="0, 0, 5, 0"/>
+
+            <Button x:Name="LoopButton"
+                        Style="{StaticResource ToggleLoop}"
+                        FontFamily="Segoe MDL2 Assets" 
+                        Content="&#xE8EE;" 
+                        Click="Looping"
+                        Padding="10, 5" 
+                        Margin="0, 0, 5, 0"/>
+
             <Slider x:Name="VolumeSlider"
                         Minimum="0"
                         Maximum="1"
                         Value="{Binding Volume, Mode=TwoWay}"
                         SmallChange="0.01"
                         LargeChange="0.1"
-                        TickFrequency="0.1"
+                        TickFrequency="0.01"
                         IsSnapToTickEnabled="True"
                         Width="100"
                         VerticalAlignment="Center"
-                        Margin="10,0,0,0"/> 
+                        Margin="5,0,0,0"/>
+
+            <TextBlock Text="{Binding Volume, StringFormat='{}{0:P0}'}"
+                       Foreground="White"
+                       FontFamily="Segoe UI"
+                       VerticalAlignment="Center"
+                       Margin="10, 0, 10, 0">
+            </TextBlock>
         </StackPanel>
 
     </Grid>

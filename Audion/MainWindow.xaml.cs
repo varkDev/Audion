@@ -4,6 +4,7 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Forms;
 using System.Windows.Input;
+using System.Windows.Media;
 
 namespace Audion
 {
@@ -89,6 +90,7 @@ namespace Audion
             {
                 vm.SelectedPlaylist.TraverseForwards();
                 vm.PlayCurrentTrack();
+                vm.IsLooping = false;
             }
         }
 
@@ -98,6 +100,7 @@ namespace Audion
             {
                 vm.SelectedPlaylist.TraverseBackwards();
                 vm.PlayCurrentTrack();
+                vm.IsLooping = false;
             }
         }
 
@@ -141,5 +144,14 @@ namespace Audion
             }
         }
 
+        private void Looping(object button, RoutedEventArgs e)
+        {
+            if (DataContext is MainViewModel vm)
+            {
+                vm.ToggleLoop();
+            }
+        }
+
     }
 }
+//a3f7bf

@@ -51,9 +51,19 @@ namespace Audion.Models
                 {
                     selectedTrack = value;
                     OnPropertyChanged(nameof(SelectedTrack));
+
+                    if (selectedTrack != null)
+                    {
+                        int index = Tracks.IndexOf(selectedTrack);
+                        if (index >= 0 && index != currentTrackIndex)
+                        {
+                            CurrentTrackIndex = index; // <- this sets both index and SelectedTrack
+                        } 
+                    }
                 }
             }
         }
+
 
         public Track? CurrentTrack =>
                 (CurrentTrackIndex >= 0 && CurrentTrackIndex < Tracks.Count)

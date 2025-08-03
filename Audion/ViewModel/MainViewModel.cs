@@ -4,6 +4,7 @@ using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Windows.Threading;
 using System.Windows.Media;
+using System.Windows.Media.Effects;
 
 namespace Audion.ViewModel
 {
@@ -19,6 +20,8 @@ namespace Audion.ViewModel
                 Interval = TimeSpan.FromMilliseconds(200)
             };
             timer.Tick += Timer_Tick;
+
+            mediaPlayer.MediaEnded += MediaPlayer_MediaEnded;
         }
 
 
@@ -99,7 +102,7 @@ namespace Audion.ViewModel
                 else
                 {
                     mediaPlayer.Play();
-                    isPlaying = true;
+                    IsPlaying = true;
                     timer.Start();
                 }
             }
@@ -119,6 +122,33 @@ namespace Audion.ViewModel
             mediaPlayer.Play();
             IsPlaying = true;
             timer.Start();
+        }
+
+        private void MediaPlayer_MediaEnded(object? sender, EventArgs e)
+        {
+            IsPlaying = false;
+            timer.Stop();
+
+            if (isLooping)
+            {
+                mediaPlayer.Position = TimeSpan.Zero;
+                mediaPlayer.Play();
+                IsPlaying = true;
+                timer.Start();
+            }
+
+            else if (selectedPlaylist != null)
+            {
+                selectedPlaylist.TraverseForwards();
+                PlayCurrentTrack();
+                IsPlaying = true;
+                timer.Start();
+            }
+            else
+            {
+                IsPlaying = false;
+                timer.Stop();
+            }
         }
 
         private void Timer_Tick(object? slider, EventArgs e)
@@ -194,8 +224,32 @@ namespace Audion.ViewModel
             isDraggingAudioBar = false;
             timer.Start();
         }
+        
         public string PositionFormatted => TimeSpan.FromSeconds(Position).ToString(@"mm\:ss");
         public string DurationFormatted => TimeSpan.FromSeconds(Duration).ToString(@"mm\:ss");
+
+        public string VolumeFormatted => (int)(Volume * 100) + "%";
+
+        private bool isLooping = false;
+        public bool IsLooping
+        {
+            get => isLooping;
+            set
+            {
+                if (isLooping != value)
+                {
+                    isLooping = value;
+                    OnPropertyChanged(nameof(IsLooping));
+                }
+            }
+        }
+
+        public void ToggleLoop()
+        {
+            isLooping = !isLooping;
+            OnPropertyChanged(nameof(IsLooping));
+        }
+
 
     }
 }
