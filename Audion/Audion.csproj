@@ -7,8 +7,9 @@
     <ImplicitUsings>enable</ImplicitUsings>
     <UseWPF>true</UseWPF>
     <UseWindowsForms>true</UseWindowsForms>
+	<ApplicationIcon>Assets\Audion.ico</ApplicationIcon>
   </PropertyGroup>
-
+	
   <ItemGroup>
     <Resource Include="Assets\Audion.ico">
       <CopyToOutputDirectory>Never</CopyToOutputDirectory>
