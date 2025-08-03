@@ -88,8 +88,7 @@ namespace Audion
         {
             if (DataContext is MainViewModel vm && vm.SelectedPlaylist != null)
             {
-                vm.SelectedPlaylist.TraverseForwards();
-                vm.PlayCurrentTrack();
+                vm.NextTrack();
                 vm.IsLooping = false;
             }
         }
@@ -98,8 +97,7 @@ namespace Audion
         {
             if (DataContext is MainViewModel vm && vm.SelectedPlaylist != null)
             {
-                vm.SelectedPlaylist.TraverseBackwards();
-                vm.PlayCurrentTrack();
+                vm.PreviousTrack();
                 vm.IsLooping = false;
             }
         }
@@ -154,4 +152,3 @@ namespace Audion
 
     }
 }
-//a3f7bf

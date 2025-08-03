@@ -11,6 +11,9 @@ namespace Audion.ViewModel
     internal class MainViewModel : INotifyPropertyChanged //the purpose of this model is to be the middleman between the view and the model
     {
         private MediaPlayer mediaPlayer;
+        private Playlist? currentlyPlayingPlaylist;
+
+        private int currentlyPlayingTrackIndex = -1;
 
         public MainViewModel()
         {
@@ -86,16 +89,33 @@ namespace Audion.ViewModel
 
         public void PlayCurrentTrack()
         {
-            if (SelectedPlaylist?.SelectedTrack != null)
+            if (SelectedPlaylist == null)
             {
+                return;
+            }
 
-                var newUri = new Uri(SelectedPlaylist.SelectedTrack.FilePath);
+            currentlyPlayingPlaylist = SelectedPlaylist;
+            var track = currentlyPlayingPlaylist.SelectedTrack;
+
+            if (track == null && currentlyPlayingPlaylist.Tracks.Count > 0)
+            {
+                // No track selected, default to first
+                currentlyPlayingPlaylist.CurrentTrackIndex = 0;
+                track = currentlyPlayingPlaylist.CurrentTrack;
+            }
+
+            if (track != null)
+            {
+                currentlyPlayingPlaylist.SelectedTrack = track;
+                                       
+                var newUri = new Uri(track.FilePath);
 
                 if (currentUri == null || currentUri != newUri)
                 {
                     mediaPlayer.Stop(); // Stop any current playback
                     currentUri = newUri;
                     mediaPlayer.Volume = volume; // Ensure volume is up
+                    mediaPlayer.MediaOpened -= MediaPlayer_MediaOpened; //in case
                     mediaPlayer.MediaOpened += MediaPlayer_MediaOpened; // Subscribe event
                     mediaPlayer.Open(newUri);
                 }
@@ -137,9 +157,9 @@ namespace Audion.ViewModel
                 timer.Start();
             }
 
-            else if (selectedPlaylist != null)
+            else if (currentlyPlayingPlaylist != null)
             {
-                selectedPlaylist.TraverseForwards();
+                currentlyPlayingPlaylist.TraverseForwards();
                 PlayCurrentTrack();
                 IsPlaying = true;
                 timer.Start();
@@ -212,6 +232,25 @@ namespace Audion.ViewModel
                 Position = seconds;  // update for UI
             }
         }
+
+        public void NextTrack()
+        {
+            if (currentlyPlayingPlaylist != null && currentlyPlayingPlaylist.Tracks.Count > 0)
+            {
+                currentlyPlayingPlaylist.TraverseForwards();
+                PlayCurrentTrack();
+            }
+        }
+
+        public void PreviousTrack()
+        {
+            if (currentlyPlayingPlaylist != null && currentlyPlayingPlaylist.Tracks.Count > 0)
+            {
+                currentlyPlayingPlaylist.TraverseBackwards();
+                PlayCurrentTrack();
+            }
+        }
+
 
         public void InitiateSlide() //when they left click hold on the audio bar to move it
         {

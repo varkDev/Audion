@@ -27,7 +27,7 @@ namespace Audion.Models
             }
         }
 
-        private int CurrentTrackIndex 
+        public int CurrentTrackIndex 
         {
             get => currentTrackIndex;
             set
@@ -58,7 +58,7 @@ namespace Audion.Models
                         if (index >= 0 && index != currentTrackIndex)
                         {
                             CurrentTrackIndex = index; // <- this sets both index and SelectedTrack
-                        } 
+                        }
                     }
                 }
             }
