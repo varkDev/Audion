@@ -10,7 +10,7 @@ Audion is a lightweight, modern audio player built using **C#**, **WPF**, and th
 
 ### ✨ Features
 
-- 🎵 **Playlist Management**  
+- 🎧 **Playlist Management**  
   Add, delete, and refresh custom playlists.
 
 - 📜 **Track List View**  
