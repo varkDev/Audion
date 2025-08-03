@@ -1,7 +1,9 @@
-﻿using System.Windows;
+﻿using Audion.Models;
 using Audion.ViewModel;
+using System.Windows;
+using System.Windows.Controls;
 using System.Windows.Forms;
-using Audion.Models;
+using System.Windows.Input;
 
 namespace Audion
 {
@@ -86,6 +88,7 @@ namespace Audion
             if (DataContext is MainViewModel vm && vm.SelectedPlaylist != null)
             {
                 vm.SelectedPlaylist.TraverseForwards();
+                vm.PlayCurrentTrack();
             }
         }
 
@@ -94,14 +97,47 @@ namespace Audion
             if (DataContext is MainViewModel vm && vm.SelectedPlaylist != null)
             {
                 vm.SelectedPlaylist.TraverseBackwards();
+                vm.PlayCurrentTrack();
             }
         }
 
-        private void PlayPauseButton_Click(object button, RoutedEventArgs metaInformation)
+        private void PlayPauseButton_Click(object sender, RoutedEventArgs e)
         {
             if (DataContext is MainViewModel vm)
             {
-                vm.IsPlaying = !vm.IsPlaying;
+                if (vm.IsPlaying)
+                {
+                    vm.Pause();
+                }
+                else
+                {
+                    vm.PlayCurrentTrack();
+                }
+            }
+        }
+
+        private void VolumeSlider_ValueChanged(object slider, RoutedPropertyChangedEventArgs<double> e)
+        {
+            if (DataContext is MainViewModel vm)
+            {
+                vm.SetVolume(e.NewValue);
+            }
+        }
+
+        private void AudioBar_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+        {
+            if (DataContext is MainViewModel vm)
+            {
+                vm.InitiateSlide();
+            }
+        }
+
+        private void AudioBar_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)
+        {
+            if (sender is Slider slider && DataContext is MainViewModel vm)
+            {
+                vm.AudioPosition(slider.Value);
+                vm.CeaseSlide();
             }
         }
 

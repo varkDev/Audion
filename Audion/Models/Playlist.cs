@@ -32,7 +32,7 @@ namespace Audion.Models
             get => currentTrackIndex;
             set
             {
-                if (value >= 0 && value < Tracks.Count && Tracks.Count != value)
+                if (value >= 0 && value < Tracks.Count)
                 {
                     currentTrackIndex = value;
                     SelectedTrack = Tracks[currentTrackIndex];
@@ -55,7 +55,10 @@ namespace Audion.Models
             }
         }
 
-        public Track? CurrentTrack => Tracks.Count > 0 ? Tracks[CurrentTrackIndex] : null;
+        public Track? CurrentTrack =>
+                (CurrentTrackIndex >= 0 && CurrentTrackIndex < Tracks.Count)
+                ? Tracks[CurrentTrackIndex]
+                : null;
 
         public ObservableCollection<Track> Tracks
         {

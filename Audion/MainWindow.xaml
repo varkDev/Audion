@@ -1,7 +1,8 @@
 ﻿<Window x:Class="Audion.MainWindow"
         
-        Background="#131621"
-        ResizeMode="NoResize"
+        Icon="pack://application:,,,/Assets/Audion.ico"
+        Background="#1A252E"
+        ResizeMode="CanMinimize"
         BorderBrush="Transparent"
         
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
@@ -31,7 +32,7 @@
 
         <Border Grid.Column="0"
                 CornerRadius="10"
-                Background="#0C0F15"
+                Background="#11191E"
                 ClipToBounds="True"
                 Padding="5">
             <ListBox ItemsSource="{Binding Playlists}"
@@ -47,7 +48,7 @@
 
         <Border Grid.Column="2"
                 CornerRadius="10"
-                Background="#0C0F15"
+                Background="#11191E"
                 ClipToBounds="True"
                 Padding="5">
             <ListBox ItemsSource="{Binding SelectedPlaylist.Tracks}"
@@ -65,28 +66,31 @@
                     Orientation="Horizontal" 
                     HorizontalAlignment="Center" 
                     Margin="0, 10, 10, 0">
-                <Button FontFamily="Segoe MDL2 Assets" 
+            
+            <Button FontFamily="Segoe MDL2 Assets" 
                         Content="&#xE109;" 
                         Click="AddPlaylistButton_Click"
                         Padding="10, 5" 
                         Margin="0, 0, 5, 0"
-                        Background="#0C0F15"
+                        Background="#11191E"
                         Foreground="White"
                         BorderBrush="Transparent"/>
-                <Button FontFamily="Segoe MDL2 Assets" 
+            
+            <Button FontFamily="Segoe MDL2 Assets" 
                         Content="&#xE74D;" 
                         Click="DeletePlaylistButton_Click"
                         Padding="10, 5" 
                         Margin="0, 0, 5, 0"
-                        Background="#0C0F15"
+                        Background="#11191E"
                         Foreground="White"
                         BorderBrush="Transparent"/>
-                <Button FontFamily="Segoe MDL2 Assets" 
+            
+            <Button FontFamily="Segoe MDL2 Assets" 
                         Content="&#xE72C;" 
                         Click="RefreshButton_Click"
                         Padding="10, 5" 
                         Margin="0, 0, 5, 0"
-                        Background="#0C0F15"
+                        Background="#11191E"
                         Foreground="White"
                         BorderBrush="Transparent"/>
         </StackPanel>
@@ -96,30 +100,65 @@
                     Orientation="Horizontal" 
                     HorizontalAlignment="Center" 
                     Margin="0, 10, 10, 0">
+
+            <TextBlock Foreground="White"
+                       FontFamily="Segoe UI"
+                       VerticalAlignment="Center"
+                       Margin="0, 0, 10, 0">
+            <Run Text="{Binding PositionFormatted, Mode=OneWay}" />
+            <Run Text=" / " />
+            <Run Text="{Binding DurationFormatted, Mode=OneWay}" />
+            </TextBlock>
+
+            <Slider x:Name="AudioBar" 
+                    Minimum="0" 
+                    Maximum="{Binding Duration}" 
+                    Value="{Binding Position, Mode=TwoWay}" 
+                    PreviewMouseLeftButtonDown="AudioBar_MouseLeftButtonDown"
+                    PreviewMouseLeftButtonUp="AudioBar_MouseLeftButtonUp"
+                    Width="550"
+                    Height="20"
+                    Margin="10"/>
+
+
             <Button FontFamily="Segoe MDL2 Assets" 
                         Content="&#xE892;" 
                         Click="BTraverse"
                         Padding="10, 5" 
                         Margin="0, 0, 5, 0"
-                        Background="#0C0F15"
+                        Background="#11191E"
                         Foreground="White"
                         BorderBrush="Transparent"/>
+            
             <Button FontFamily="Segoe MDL2 Assets" 
                         Content="{Binding PlayPauseIcon}" 
                         Click="PlayPauseButton_Click"
                         Padding="10, 5" 
                         Margin="0, 0, 5, 0"
-                        Background="#0C0F15"
+                        Background="#11191E"
                         Foreground="White"
                         BorderBrush="Transparent"/>
+            
             <Button FontFamily="Segoe MDL2 Assets" 
                         Content="&#xE893;" 
                         Click="FTraverse"
                         Padding="10, 5" 
                         Margin="0, 0, 5, 0"
-                        Background="#0C0F15"
+                        Background="#11191E"
                         Foreground="White"
                         BorderBrush="Transparent"/>
+            
+            <Slider x:Name="VolumeSlider"
+                        Minimum="0"
+                        Maximum="1"
+                        Value="{Binding Volume, Mode=TwoWay}"
+                        SmallChange="0.01"
+                        LargeChange="0.1"
+                        TickFrequency="0.1"
+                        IsSnapToTickEnabled="True"
+                        Width="100"
+                        VerticalAlignment="Center"
+                        Margin="10,0,0,0"/> 
         </StackPanel>
 
     </Grid>
